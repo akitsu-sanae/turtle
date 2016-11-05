@@ -12,6 +12,7 @@
 #include <algorithm>
 
 #include "turtle.hpp"
+#include "operation.hpp"
 
 template<size_t W, size_t H>
 struct Field {
@@ -27,19 +28,19 @@ struct Field {
     }
     void update() {
         std::string command;
-        std::cin >> command;
-        auto op = Operation::to_type(command);
-        switch (op) {
-        case Operation::Type::Quit:
+        std::getline(std::cin, command);
+        auto op = OperationBase::read(command);
+        switch (op->type()) {
+        case OpType::Quit:
             m_is_quit = true;
             break;
-        case Operation::Type::MoveUp:
-        case Operation::Type::MoveDown:
-        case Operation::Type::MoveLeft:
-        case Operation::Type::MoveRight:
+        case OpType::MoveUp:
+        case OpType::MoveDown:
+        case OpType::MoveLeft:
+        case OpType::MoveRight:
             turtle.update(op);
             break;
-        case Operation::Type::Invalid:
+        case OpType::Invalid:
             std::printf("\033[31m");
             std::printf("Invalid Command");
             std::printf("\033[39m");

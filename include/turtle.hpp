@@ -15,19 +15,19 @@
 struct Turtle {
     int x = 3, y = 2;
 
-    void update(Operation::Type type) {
-        switch (type) {
-        case Operation::Type::MoveUp:
-            y--;
+    void update(std::unique_ptr<OperationBase> const& op) {
+        switch (op->type()) {
+        case OpType::MoveUp:
+            y -= op->cast<OpType::MoveUp>().distance;
             break;
-        case Operation::Type::MoveDown:
-            y++;
+        case OpType::MoveDown:
+            y += op->cast<OpType::MoveDown>().distance;
             break;
-        case Operation::Type::MoveLeft:
-            x--;
+        case OpType::MoveLeft:
+            x -= op->cast<OpType::MoveLeft>().distance;
             break;
-        case Operation::Type::MoveRight:
-            x++;
+        case OpType::MoveRight:
+            x += op->cast<OpType::MoveRight>().distance;
             break;
         default:
             abort();
