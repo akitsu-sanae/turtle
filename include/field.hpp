@@ -13,6 +13,7 @@
 
 #include "turtle.hpp"
 #include "operation.hpp"
+#include "command_loader.hpp"
 
 template<size_t W, size_t H>
 struct Field {
@@ -27,9 +28,7 @@ struct Field {
         std::printf("\033[2");
     }
     void update() {
-        std::string command;
-        std::getline(std::cin, command);
-        auto op = OperationBase::read(command);
+        auto op = m_command_loader.read();
         switch (op->type()) {
         case OpType::Quit:
             m_is_quit = true;
@@ -39,6 +38,9 @@ struct Field {
         case OpType::MoveLeft:
         case OpType::MoveRight:
             turtle.update(op);
+            break;
+        case OpType::Load:
+            m_command_loader.new_file(op->cast<OpType::Load>().filename);
             break;
         case OpType::Invalid:
             std::printf("\033[31m");
@@ -57,7 +59,7 @@ struct Field {
             std::cout << std::endl;
         }
         turtle.draw();
-        std::printf("\033[%d;1HCommand: ", Height);
+        std::printf("\033[%zu;1H(%d, %d)Command: ", Height, turtle.x, turtle.y);
     }
 
     char at(size_t x, size_t y) const {
@@ -66,6 +68,7 @@ struct Field {
     bool is_quit() const { return m_is_quit; }
 private:
     bool m_is_quit = false;
+    CommandLoader m_command_loader;
     std::array<char, Width * Height> m_maptip;
 };
 

@@ -14,6 +14,7 @@
 
 enum class OpType {
     Quit,
+    Load,
 
     MoveUp,
     MoveDown,
@@ -42,6 +43,15 @@ struct Operation<OpType::Invalid> : public OperationBase {
     OpType type() const override { return OpType::Invalid; }
 };
 
+template<>
+struct Operation<OpType::Load> : public OperationBase {
+    explicit Operation(std::string const& filename) :
+        filename(filename)
+    {}
+    OpType type() const override { return OpType::Load; }
+    std::string filename;
+};
+
 // move operations
 template<OpType T>
 struct Operation : public OperationBase {
@@ -62,19 +72,20 @@ inline std::unique_ptr<OperationBase> OperationBase::read(std::string const& com
         else
             return std::make_unique<Operation<OpType::Invalid> >();
     } else if (args.size() == 2) {
-        int distance = std::stoi(args[1]);
         if (args[0] == "up")
-            return std::make_unique<Operation<OpType::MoveUp> >(distance);
+            return std::make_unique<Operation<OpType::MoveUp> >(std::stoi(args[1]));
         else if (args[0] == "down")
-            return std::make_unique<Operation<OpType::MoveDown> >(distance);
+            return std::make_unique<Operation<OpType::MoveDown> >(std::stoi(args[1]));
         else if (args[0] == "left")
-            return std::make_unique<Operation<OpType::MoveLeft> >(distance);
+            return std::make_unique<Operation<OpType::MoveLeft> >(std::stoi(args[1]));
         else if (args[0] == "right")
-            return std::make_unique<Operation<OpType::MoveRight> >(distance);
+            return std::make_unique<Operation<OpType::MoveRight> >(std::stoi(args[1]));
+        else if (args[0] == "load")
+            return std::make_unique<Operation<OpType::Load> >(args[1]);
         else
             return std::make_unique<Operation<OpType::Invalid> >();
-
-    }
+    } else
+        return std::make_unique<Operation<OpType::Invalid> >();
 }
 
 template<OpType T>
