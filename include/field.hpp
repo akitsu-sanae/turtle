@@ -54,14 +54,18 @@ struct Field {
         std::printf("\033[2 \033[0;0H");
         for (size_t y=0; y<Height; y++) {
             for (size_t x=0; x<Width; x++) {
-                std::cout << at(x, y);
+                if (x == 0 || x == Width-1)
+                    std::cout << (y%2 ? '|' : 'I');
+                else if (y == 0 || y == Height-1)
+                    std::cout << (x%2 ? '-' : '=');
+                else
+                    std::cout << ' ';
             }
             std::cout << std::endl;
         }
         turtle.draw();
         std::printf("\033[%zu;1H(%d, %d)Command: ", Height, turtle.x, turtle.y);
     }
-
     char at(size_t x, size_t y) const {
         return m_maptip.at(x + y*Width);
     }
