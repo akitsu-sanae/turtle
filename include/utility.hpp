@@ -14,4 +14,13 @@ std::vector<std::string> split(std::string const& input, char del) {
     return result;
 }
 
+template<typename T>
+T clamp(T const& x, T const& n) {
+    if (x < -n)
+        return -n;
+    if (x > n)
+        return n;
+    return x;
+}
+
 #endif

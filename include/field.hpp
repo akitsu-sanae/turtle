@@ -8,12 +8,13 @@
 #ifndef TURTLE_FIELD_HPP
 #define TIRTLE_FIELD_HPP
 
-#include <array>
+#include <vector>
 #include <algorithm>
 
 #include "turtle.hpp"
 #include "operation.hpp"
 #include "command_loader.hpp"
+#include "track.hpp"
 
 template<size_t W, size_t H>
 struct Field {
@@ -22,7 +23,8 @@ struct Field {
     Turtle turtle;
 
     explicit Field() {
-        std::fill(std::begin(m_maptip), std::end(m_maptip), '_');
+        m_tracks.emplace_back();
+        m_tracks.back().coords.emplace_back(turtle.x, turtle.y);
     }
     ~Field() {
         std::printf("\033[2");
@@ -37,7 +39,7 @@ struct Field {
         case OpType::MoveDown:
         case OpType::MoveLeft:
         case OpType::MoveRight:
-            turtle.update(op);
+            turtle.update(op, m_tracks.back());
             break;
         case OpType::Load:
             m_command_loader.new_file(op->cast<OpType::Load>().filename);
@@ -63,17 +65,16 @@ struct Field {
             }
             std::cout << std::endl;
         }
+        for (auto const& track: m_tracks)
+            track.draw();
         turtle.draw();
         std::printf("\033[%zu;1H(%d, %d)Command: ", Height, turtle.x, turtle.y);
-    }
-    char at(size_t x, size_t y) const {
-        return m_maptip.at(x + y*Width);
     }
     bool is_quit() const { return m_is_quit; }
 private:
     bool m_is_quit = false;
     CommandLoader m_command_loader;
-    std::array<char, Width * Height> m_maptip;
+    std::vector<Track> m_tracks;
 };
 
 #endif
