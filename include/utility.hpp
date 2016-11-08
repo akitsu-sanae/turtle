@@ -23,4 +23,13 @@ inline T clamp(T const& x, T const& n) {
     return x;
 }
 
+template<typename T>
+inline T clamp(T const& x, T const& min, T const& max) {
+    if (x < min)
+        return min;
+    if (x > max)
+        return max;
+    return x;
+}
+
 #endif

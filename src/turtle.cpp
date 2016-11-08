@@ -7,8 +7,14 @@
 
 #include "utility.hpp"
 #include "turtle.hpp"
+#include "field.hpp"
 #include "track.hpp"
 #include "operation.hpp"
+
+Turtle::Turtle(Field const& field) :
+    m_field(field)
+{
+}
 
 void Turtle::update(std::unique_ptr<OperationBase> const& op, Track& track) {
     switch (op->type()) {
@@ -53,6 +59,8 @@ void Turtle::update(std::unique_ptr<OperationBase> const& op, Track& track) {
     default:
         abort();
     }
+    m_x = clamp(m_x, 1, (int)m_field.width()-1);
+    m_y = clamp(m_y, 1, (int)m_field.height()-1);
     track.coords.emplace_back(m_x, m_y);
 }
 

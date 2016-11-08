@@ -10,14 +10,16 @@
 #include <fstream>
 #include <algorithm>
 
+#include "turtle.hpp"
 #include "field.hpp"
 
 Field::Field(size_t w, size_t h) :
     m_width(w),
     m_height(h)
 {
+    m_turtle = std::make_unique<Turtle>(*this);
     m_tracks.emplace_back();
-    m_tracks.back().coords.emplace_back(m_turtle.x(), m_turtle.y());
+    m_tracks.back().coords.emplace_back(m_turtle->x(), m_turtle->y());
 }
 
 Field::~Field() {
@@ -34,7 +36,7 @@ void Field::update() {
     case OpType::Backward:
     case OpType::TurnLeft:
     case OpType::TurnRight:
-        m_turtle.update(op, m_tracks.back());
+        m_turtle->update(op, m_tracks.back());
         break;
     case OpType::Load:
         m_command_loader.new_file(op->cast<OpType::Load>().filename);
@@ -62,7 +64,7 @@ void Field::draw() const {
     }
     for (auto const& track: m_tracks)
         track.draw();
-    m_turtle.draw();
-    std::printf("\033[%zu;1H(%d, %d)Command: ", m_height, m_turtle.x(), m_turtle.y());
+    m_turtle->draw();
+    std::printf("\033[%zu;1H(%d, %d)Command: ", m_height, m_turtle->x(), m_turtle->y());
 }
 

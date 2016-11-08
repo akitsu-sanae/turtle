@@ -12,6 +12,7 @@
 
 struct Track;
 struct OperationBase;
+struct Field;
 
 struct Turtle {
     enum class Direction {
@@ -20,12 +21,16 @@ struct Turtle {
         Down,
         Right
     };
+
+    explicit Turtle(Field const& field);
+
     void update(std::unique_ptr<OperationBase> const&, Track&);
     void draw() const;
 
     int x() const { return m_x; }
     int y() const { return m_y; }
 private:
+    Field const& m_field;
     int m_x = 3, m_y = 2;
     Direction m_dir = Direction::Down;
 };
