@@ -15,6 +15,7 @@
 enum class OpType {
     Quit,
     Load,
+    Sleep,
 
     TurnLeft,
     TurnRight,
@@ -52,6 +53,15 @@ struct Operation<OpType::Load> : public OperationBase {
     {}
     OpType type() const override { return OpType::Load; }
     std::string filename;
+};
+
+template<>
+struct Operation<OpType::Sleep> : public OperationBase {
+    explicit Operation(int n) :
+        time(n)
+    {}
+    OpType type() const override { return OpType::Sleep; }
+    int time;
 };
 
 template<>

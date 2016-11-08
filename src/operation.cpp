@@ -1,6 +1,5 @@
 
 #include "operation.hpp"
-
 std::unique_ptr<OperationBase>
 OperationBase::read(std::string const& command) {
     auto args = split(command, ' ');
@@ -8,6 +7,8 @@ OperationBase::read(std::string const& command) {
         return std::make_unique<Operation<OpType::Quit> >();
     else if (args[0] == "load")
         return std::make_unique<Operation<OpType::Load> >(args[1]);
+    else if (args[0] == "sleep")
+        return std::make_unique<Operation<OpType::Sleep> >(std::stoi(args[1]));
     else if (args[0] == "forward")
         return std::make_unique<Operation<OpType::Forward> >(std::stoi(args[1]));
     else if (args[0] == "backward")

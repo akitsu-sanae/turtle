@@ -10,6 +10,8 @@
 #include <fstream>
 #include <algorithm>
 
+#include <unistd.h>
+
 #include "turtle.hpp"
 #include "field.hpp"
 
@@ -40,6 +42,9 @@ void Field::update() {
         break;
     case OpType::Load:
         m_command_loader.new_file(op->cast<OpType::Load>().filename);
+        break;
+    case OpType::Sleep:
+        usleep(op->cast<OpType::Sleep>().time);
         break;
     case OpType::Invalid:
         std::printf("\033[31m");
