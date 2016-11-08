@@ -71,6 +71,20 @@ struct Turtle {
     }
     void draw() const {
         std::printf("\033[%d;%dH*", y, x);
+        switch (dir) {
+        case Direction::Up:
+            std::printf("\033[%d;%dH^", y-1, x);
+            break;
+        case Direction::Left:
+            std::printf("\033[%d;%dH<", y, x-1);
+            break;
+        case Direction::Down:
+            std::printf("\033[%d;%dHV", y+1, x);
+            break;
+        case Direction::Right:
+            std::printf("\033[%d;%dH>", y, x+1);
+            break;
+        }
     }
 };
 
