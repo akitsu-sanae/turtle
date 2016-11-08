@@ -1,3 +1,10 @@
+/*============================================================================
+  Copyright (C) 2016 akitsu sanae
+  https://github.com/akitsu-sanae/turtle
+  Distributed under the Boost Software License, Version 1.0. (See accompanying
+  file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
+============================================================================*/
+
 #ifndef TURTLE_UTILITY_HPP
 #define TURTLE_UTILITY_HPP
 
@@ -5,17 +12,10 @@
 #include <string>
 #include <sstream>
 
-std::vector<std::string> split(std::string const& input, char del) {
-    std::istringstream is{input};
-    std::vector<std::string> result;
-    std::string buf;
-    while (std::getline(is, buf, del))
-        result.push_back(buf);
-    return result;
-}
+std::vector<std::string> split(std::string const&, char);
 
 template<typename T>
-T clamp(T const& x, T const& n) {
+inline T clamp(T const& x, T const& n) {
     if (x < -n)
         return -n;
     if (x > n)

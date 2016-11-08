@@ -8,26 +8,13 @@
 #ifndef TURTLE_COMMAND_LOADER_HPP
 #define TURTLE_COMMAND_LOADER_HPP
 
-#include <fstream>
+#include <vector>
 
-#include "operation.hpp"
+struct OperationBase;
 
 struct CommandLoader {
-    std::unique_ptr<OperationBase> read() {
-        std::string command;
-        while (!files.empty() && !files.back())
-            files.pop_back();
-
-        if (files.empty())
-            std::getline(std::cin, command);
-        else
-            std::getline(files.back(), command);
-        return OperationBase::read(command);
-    }
-    void new_file(std::string const& filename) {
-        std::ifstream ifs(filename);
-        files.push_back(std::move(ifs));
-    }
+    std::unique_ptr<OperationBase> read();
+    void new_file(std::string const&);
 private:
     std::vector<std::ifstream> files;
 };

@@ -10,7 +10,7 @@
 #include "field.hpp"
 
 int main() {
-    Field<50, 25> field;
+    Field field{50, 25};
     while (!field.is_quit()) {
         field.draw();
         field.update();

@@ -8,10 +8,10 @@
 #ifndef TURTLE_HPP
 #define TIRTLE_HPP
 
-#include <cstdio>
+#include <memory>
 
-#include "operation.hpp"
-#include "track.hpp"
+struct Track;
+struct OperationBase;
 
 struct Turtle {
     enum class Direction {
@@ -24,68 +24,9 @@ struct Turtle {
     int x = 3, y = 2;
     Direction dir = Direction::Down;
 
-    void update(std::unique_ptr<OperationBase> const& op, Track& track) {
-        switch (op->type()) {
-        case OpType::TurnLeft:
-            dir = static_cast<Direction>((static_cast<int>(dir) + 1) % 4);
-            break;
-        case OpType::TurnRight:
-            dir = static_cast<Direction>((static_cast<int>(dir) - 1 + 4) % 4);
-            break;
-        case OpType::Forward:
-            switch (dir) {
-            case Direction::Up:
-                y -= op->cast<OpType::Forward>().distance;
-                break;
-            case Direction::Down:
-                y += op->cast<OpType::Forward>().distance;
-                break;
-            case Direction::Right:
-                x += op->cast<OpType::Forward>().distance;
-                break;
-            case Direction::Left:
-                x -= op->cast<OpType::Forward>().distance;
-                break;
-            }
-            break;
-        case OpType::Backward:
-            switch (dir) {
-            case Direction::Up:
-                y += op->cast<OpType::Backward>().distance;
-                break;
-            case Direction::Down:
-                y -= op->cast<OpType::Backward>().distance;
-                break;
-            case Direction::Right:
-                x -= op->cast<OpType::Backward>().distance;
-                break;
-            case Direction::Left:
-                x += op->cast<OpType::Backward>().distance;
-                break;
-            }
-            break;
-        default:
-            abort();
-        }
-        track.coords.emplace_back(x, y);
-    }
-    void draw() const {
-        std::printf("\033[%d;%dH*", y, x);
-        switch (dir) {
-        case Direction::Up:
-            std::printf("\033[%d;%dH^", y-1, x);
-            break;
-        case Direction::Left:
-            std::printf("\033[%d;%dH<", y, x-1);
-            break;
-        case Direction::Down:
-            std::printf("\033[%d;%dHV", y+1, x);
-            break;
-        case Direction::Right:
-            std::printf("\033[%d;%dH>", y, x+1);
-            break;
-        }
-    }
+    void update(std::unique_ptr<OperationBase> const&, Track&);
+
+    void draw() const;
 };
 
 #endif

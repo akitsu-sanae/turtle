@@ -5,29 +5,15 @@
   file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 ============================================================================*/
 
-#ifndef TURTLE_TRACK_HPP
-#define TURTLE_TRACK_HPP
+#include "utility.hpp"
 
-#include <vector>
-#include <utility>
-
-struct Track {
-    enum class Color {
-        Black = 0,
-        Red,
-        Green,
-        Yellow,
-        Blue,
-        Magenta,
-        Cyan,
-        White,
-    };
-
-    Color color;
-    std::vector<std::pair<int, int> > coords;
-
-    void draw() const;
-};
-
-#endif
+std::vector<std::string>
+split(std::string const& input, char del) {
+    std::istringstream is{input};
+    std::vector<std::string> result;
+    std::string buf;
+    while (std::getline(is, buf, del))
+        result.push_back(buf);
+    return result;
+}
 
