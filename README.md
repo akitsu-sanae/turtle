@@ -4,10 +4,11 @@ nyan
 
 # Commands
 
-* up ... decrement turtle's y
-* down ... increment turtle's y
-* left ... decrement turtle's x
-* right ... increment turtle's x
+* forward n ... go forward n steps
+* backward n ... go backward n steps
+* left ... turn left
+* right ... turn right
+* load [filename] ... load command from [filename]
 * quit ... quit this application
 
 # Copyright
