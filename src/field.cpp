@@ -17,7 +17,7 @@ Field::Field(size_t w, size_t h) :
     m_height(h)
 {
     m_tracks.emplace_back();
-    m_tracks.back().coords.emplace_back(m_turtle.x, m_turtle.y);
+    m_tracks.back().coords.emplace_back(m_turtle.x(), m_turtle.y());
 }
 
 Field::~Field() {
@@ -63,6 +63,6 @@ void Field::draw() const {
     for (auto const& track: m_tracks)
         track.draw();
     m_turtle.draw();
-    std::printf("\033[%zu;1H(%d, %d)Command: ", m_height, m_turtle.x, m_turtle.y);
+    std::printf("\033[%zu;1H(%d, %d)Command: ", m_height, m_turtle.x(), m_turtle.y());
 }
 

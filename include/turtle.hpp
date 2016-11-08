@@ -20,13 +20,14 @@ struct Turtle {
         Down,
         Right
     };
-
-    int x = 3, y = 2;
-    Direction dir = Direction::Down;
-
     void update(std::unique_ptr<OperationBase> const&, Track&);
-
     void draw() const;
+
+    int x() const { return m_x; }
+    int y() const { return m_y; }
+private:
+    int m_x = 3, m_y = 2;
+    Direction m_dir = Direction::Down;
 };
 
 #endif
