@@ -35,10 +35,10 @@ struct Field {
         case OpType::Quit:
             m_is_quit = true;
             break;
-        case OpType::MoveUp:
-        case OpType::MoveDown:
-        case OpType::MoveLeft:
-        case OpType::MoveRight:
+        case OpType::Forward:
+        case OpType::Backward:
+        case OpType::TurnLeft:
+        case OpType::TurnRight:
             turtle.update(op, m_tracks.back());
             break;
         case OpType::Load:

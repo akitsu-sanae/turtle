@@ -16,10 +16,10 @@ enum class OpType {
     Quit,
     Load,
 
-    MoveUp,
-    MoveDown,
-    MoveLeft,
-    MoveRight,
+    TurnLeft,
+    TurnRight,
+    Forward,
+    Backward,
 
     Invalid
 };
@@ -52,39 +52,47 @@ struct Operation<OpType::Load> : public OperationBase {
     std::string filename;
 };
 
-// move operations
-template<OpType T>
-struct Operation : public OperationBase {
+template<>
+struct Operation<OpType::TurnLeft> : public OperationBase {
+    OpType type() const override { return OpType::TurnLeft; }
+};
+template<>
+struct Operation<OpType::TurnRight> : public OperationBase {
+    OpType type() const override { return OpType::TurnRight; }
+};
+
+template<>
+struct Operation<OpType::Forward> : public OperationBase {
     explicit Operation(int n) :
         distance(n)
     {}
-    OpType type() const override {
-        return T;
-    }
+    OpType type() const override { return OpType::Forward; }
+    int distance;
+};
+template<>
+struct Operation<OpType::Backward> : public OperationBase {
+    explicit Operation(int n) :
+        distance(n)
+    {}
+    OpType type() const override { return OpType::Backward; }
     int distance;
 };
 
 inline std::unique_ptr<OperationBase> OperationBase::read(std::string const& command) {
     auto args = split(command, ' ');
-    if (args.size() == 1) {
-        if (args[0] == "quit")
-            return std::make_unique<Operation<OpType::Quit> >();
-        else
-            return std::make_unique<Operation<OpType::Invalid> >();
-    } else if (args.size() == 2) {
-        if (args[0] == "up")
-            return std::make_unique<Operation<OpType::MoveUp> >(std::stoi(args[1]));
-        else if (args[0] == "down")
-            return std::make_unique<Operation<OpType::MoveDown> >(std::stoi(args[1]));
-        else if (args[0] == "left")
-            return std::make_unique<Operation<OpType::MoveLeft> >(std::stoi(args[1]));
-        else if (args[0] == "right")
-            return std::make_unique<Operation<OpType::MoveRight> >(std::stoi(args[1]));
-        else if (args[0] == "load")
-            return std::make_unique<Operation<OpType::Load> >(args[1]);
-        else
-            return std::make_unique<Operation<OpType::Invalid> >();
-    } else
+    if (args[0] == "quit")
+        return std::make_unique<Operation<OpType::Quit> >();
+    else if (args[0] == "load")
+        return std::make_unique<Operation<OpType::Load> >(args[1]);
+    else if (args[0] == "forward")
+        return std::make_unique<Operation<OpType::Forward> >(std::stoi(args[1]));
+    else if (args[0] == "backward")
+        return std::make_unique<Operation<OpType::Backward> >(std::stoi(args[1]));
+    else if (args[0] == "left")
+        return std::make_unique<Operation<OpType::TurnLeft> >();
+    else if (args[0] == "right")
+        return std::make_unique<Operation<OpType::TurnRight> >();
+    else
         return std::make_unique<Operation<OpType::Invalid> >();
 }
 

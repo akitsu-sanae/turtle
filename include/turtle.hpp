@@ -14,21 +14,55 @@
 #include "track.hpp"
 
 struct Turtle {
+    enum class Direction {
+        Up,
+        Left,
+        Down,
+        Right
+    };
+
     int x = 3, y = 2;
+    Direction dir = Direction::Down;
 
     void update(std::unique_ptr<OperationBase> const& op, Track& track) {
         switch (op->type()) {
-        case OpType::MoveUp:
-            y -= op->cast<OpType::MoveUp>().distance;
+        case OpType::TurnLeft:
+            dir = static_cast<Direction>((static_cast<int>(dir) + 1) % 4);
             break;
-        case OpType::MoveDown:
-            y += op->cast<OpType::MoveDown>().distance;
+        case OpType::TurnRight:
+            dir = static_cast<Direction>((static_cast<int>(dir) - 1 + 4) % 4);
             break;
-        case OpType::MoveLeft:
-            x -= op->cast<OpType::MoveLeft>().distance;
+        case OpType::Forward:
+            switch (dir) {
+            case Direction::Up:
+                y -= op->cast<OpType::Forward>().distance;
+                break;
+            case Direction::Down:
+                y += op->cast<OpType::Forward>().distance;
+                break;
+            case Direction::Right:
+                x += op->cast<OpType::Forward>().distance;
+                break;
+            case Direction::Left:
+                x -= op->cast<OpType::Forward>().distance;
+                break;
+            }
             break;
-        case OpType::MoveRight:
-            x += op->cast<OpType::MoveRight>().distance;
+        case OpType::Backward:
+            switch (dir) {
+            case Direction::Up:
+                y += op->cast<OpType::Backward>().distance;
+                break;
+            case Direction::Down:
+                y -= op->cast<OpType::Backward>().distance;
+                break;
+            case Direction::Right:
+                x -= op->cast<OpType::Backward>().distance;
+                break;
+            case Direction::Left:
+                x += op->cast<OpType::Backward>().distance;
+                break;
+            }
             break;
         default:
             abort();
