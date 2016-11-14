@@ -36,7 +36,19 @@ void Field::update() {
         break;
     case OpType::Go:
     case OpType::Turn:
-        m_turtle->update(op, m_tracks.back());
+        if (m_is_pen_down)
+            m_turtle->update(op, &m_tracks.back());
+        else
+            m_turtle->update(op, nullptr);
+        break;
+    case OpType::Pen:
+        if (op->cast<OpType::Pen>().action == Operation<OpType::Pen>::Action::Down) {
+            m_is_pen_down = true;
+            m_tracks.emplace_back();
+            m_tracks.back().coords.emplace_back(m_turtle->x(), m_turtle->y());
+        } else {
+            m_is_pen_down = false;
+        }
         break;
     case OpType::Load:
         m_command_loader.new_file(op->cast<OpType::Load>().filename);

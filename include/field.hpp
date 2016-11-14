@@ -31,6 +31,7 @@ private:
     size_t const m_width;
     size_t const m_height;
     bool m_is_quit = false;
+    bool m_is_pen_down = true;
     std::unique_ptr<Turtle> m_turtle;
     CommandLoader m_command_loader;
     std::vector<Track> m_tracks;

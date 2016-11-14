@@ -16,7 +16,7 @@ Turtle::Turtle(Field const& field) :
 {
 }
 
-void Turtle::update(std::unique_ptr<OperationBase> const& op, Track& track) {
+void Turtle::update(std::unique_ptr<OperationBase> const& op, Track* track) {
     int dir = 0;
     switch (op->type()) {
     case OpType::Turn:
@@ -45,7 +45,8 @@ void Turtle::update(std::unique_ptr<OperationBase> const& op, Track& track) {
     }
     m_x = clamp(m_x, 1, (int)m_field.width()-1);
     m_y = clamp(m_y, 1, (int)m_field.height()-1);
-    track.coords.emplace_back(m_x, m_y);
+    if (track)
+        track->coords.emplace_back(m_x, m_y);
 }
 
 void Turtle::draw() const {

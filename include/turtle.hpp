@@ -24,13 +24,14 @@ struct Turtle {
 
     explicit Turtle(Field const& field);
 
-    void update(std::unique_ptr<OperationBase> const&, Track&);
+    void update(std::unique_ptr<OperationBase> const&, Track*);
     void draw() const;
 
     int x() const { return m_x; }
     int y() const { return m_y; }
 private:
     Field const& m_field;
+    bool m_is_pen_down = true;
     int m_x = 3, m_y = 2;
     Direction m_dir = Direction::Down;
 };

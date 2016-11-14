@@ -17,6 +17,10 @@ OperationBase::read(std::string const& command) {
         return std::make_unique<Operation<OpType::Turn> >(Operation<OpType::Turn>::Dir::Left);
     else if (args[0] == "right")
         return std::make_unique<Operation<OpType::Turn> >(Operation<OpType::Turn>::Dir::Right);
+    else if (args[0] == "pen" && args[1] == "up")
+        return std::make_unique<Operation<OpType::Pen> >(Operation<OpType::Pen>::Action::Up);
+    else if (args[0] == "pen" && args[1] == "down")
+        return std::make_unique<Operation<OpType::Pen> >(Operation<OpType::Pen>::Action::Down);
     else
         return std::make_unique<Operation<OpType::Invalid> >();
 }

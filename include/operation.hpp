@@ -20,6 +20,8 @@ enum class OpType {
     Turn,
     Go,
 
+    Pen,
+
     Invalid
 };
 
@@ -83,6 +85,17 @@ struct Operation<OpType::Go> : public OperationBase {
     int distance = 0;
     explicit Operation(Dir dir, int d) : dir(dir), distance(d) {}
     OpType type() const override { return OpType::Go; }
+};
+
+template<>
+struct Operation<OpType::Pen> : public OperationBase {
+    enum class Action {
+        Up,
+        Down
+    };
+    Action action;
+    explicit Operation(Action action) : action(action) {}
+    OpType type() const override { return OpType::Pen; }
 };
 
 #endif
