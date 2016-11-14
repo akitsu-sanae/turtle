@@ -20,8 +20,7 @@ Field::Field(size_t w, size_t h) :
     m_height(h)
 {
     m_turtle = std::make_unique<Turtle>(*this);
-    m_tracks.emplace_back();
-    m_tracks.back().coords.emplace_back(m_turtle->x(), m_turtle->y());
+    m_tracks.emplace_back(m_turtle->x(), m_turtle->y());
 }
 
 Field::~Field() {
@@ -44,8 +43,7 @@ void Field::update() {
     case OpType::Pen:
         if (op->cast<OpType::Pen>().action == Operation<OpType::Pen>::Action::Down) {
             m_is_pen_down = true;
-            m_tracks.emplace_back();
-            m_tracks.back().coords.emplace_back(m_turtle->x(), m_turtle->y());
+            m_tracks.emplace_back(m_turtle->x(), m_turtle->y());
         } else {
             m_is_pen_down = false;
         }

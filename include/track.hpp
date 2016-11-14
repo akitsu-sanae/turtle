@@ -23,10 +23,18 @@ struct Track {
         White,
     };
 
-    Color color;
-    std::vector<std::pair<int, int> > coords;
+    explicit Track(int x, int y) {
+        m_coords.emplace_back(x, y);
+    }
+
+    void put(int x, int y) {
+        m_coords.emplace_back(x, y);
+    }
 
     void draw() const;
+private:
+    Color m_color = Color::Red;
+    std::vector<std::pair<int, int> > m_coords;
 };
 
 #endif

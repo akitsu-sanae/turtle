@@ -11,11 +11,11 @@
 #include "track.hpp"
 
 void Track::draw() const {
-    std::printf("\033[%dm", 30 + static_cast<int>(Color::Red));
-    auto current_x = coords[0].first;
-    auto current_y = coords[0].second;
+    std::printf("\033[%dm", 30 + static_cast<int>(m_color));
+    auto current_x = m_coords[0].first;
+    auto current_y = m_coords[0].second;
 
-    for (auto const& target: coords) {
+    for (auto const& target: m_coords) {
         while (true) {
             auto diff_x = clamp(target.first - current_x, 1);
             auto diff_y = clamp(target.second - current_y, 1);

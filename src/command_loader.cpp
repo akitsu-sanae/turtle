@@ -15,7 +15,7 @@
 std::unique_ptr<OperationBase>
 CommandLoader::read() {
     std::string command;
-    while (!files.empty() && !files.back())
+    while (!files.empty() && !files.back().eof())
         files.pop_back();
 
     if (files.empty())

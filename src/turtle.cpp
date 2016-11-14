@@ -46,7 +46,7 @@ void Turtle::update(std::unique_ptr<OperationBase> const& op, Track* track) {
     m_x = clamp(m_x, 1, (int)m_field.width()-1);
     m_y = clamp(m_y, 1, (int)m_field.height()-1);
     if (track)
-        track->coords.emplace_back(m_x, m_y);
+        track->put(m_x, m_y);
 }
 
 void Turtle::draw() const {
