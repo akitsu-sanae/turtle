@@ -17,42 +17,26 @@ Turtle::Turtle(Field const& field) :
 }
 
 void Turtle::update(std::unique_ptr<OperationBase> const& op, Track& track) {
+    int dir = 0;
     switch (op->type()) {
-    case OpType::TurnLeft:
-        m_dir = static_cast<Direction>((static_cast<int>(m_dir) + 1) % 4);
+    case OpType::Turn:
+        dir = static_cast<int>(op->cast<OpType::Turn>().dir);
+        m_dir = static_cast<Direction>((static_cast<int>(m_dir) + dir + 4) %4);
         break;
-    case OpType::TurnRight:
-        m_dir = static_cast<Direction>((static_cast<int>(m_dir) - 1 + 4) % 4);
-        break;
-    case OpType::Forward:
+    case OpType::Go:
+        dir = static_cast<int>(op->cast<OpType::Go>().dir);
         switch (m_dir) {
         case Direction::Up:
-            m_y -= op->cast<OpType::Forward>().distance;
+            m_y -= op->cast<OpType::Go>().distance * dir;
             break;
         case Direction::Down:
-            m_y += op->cast<OpType::Forward>().distance;
+            m_y += op->cast<OpType::Go>().distance * dir;
             break;
         case Direction::Right:
-            m_x += op->cast<OpType::Forward>().distance;
+            m_x += op->cast<OpType::Go>().distance * dir;
             break;
         case Direction::Left:
-            m_x -= op->cast<OpType::Forward>().distance;
-            break;
-        }
-        break;
-    case OpType::Backward:
-        switch (m_dir) {
-        case Direction::Up:
-            m_y += op->cast<OpType::Backward>().distance;
-            break;
-        case Direction::Down:
-            m_y -= op->cast<OpType::Backward>().distance;
-            break;
-        case Direction::Right:
-            m_x -= op->cast<OpType::Backward>().distance;
-            break;
-        case Direction::Left:
-            m_x += op->cast<OpType::Backward>().distance;
+            m_x -= op->cast<OpType::Go>().distance * dir;
             break;
         }
         break;

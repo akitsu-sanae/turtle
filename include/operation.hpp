@@ -17,10 +17,8 @@ enum class OpType {
     Load,
     Sleep,
 
-    TurnLeft,
-    TurnRight,
-    Forward,
-    Backward,
+    Turn,
+    Go,
 
     Invalid
 };
@@ -65,31 +63,26 @@ struct Operation<OpType::Sleep> : public OperationBase {
 };
 
 template<>
-struct Operation<OpType::TurnLeft> : public OperationBase {
-    OpType type() const override { return OpType::TurnLeft; }
-};
-template<>
-struct Operation<OpType::TurnRight> : public OperationBase {
-    OpType type() const override { return OpType::TurnRight; }
-};
-
-template<>
-struct Operation<OpType::Forward> : public OperationBase {
-    explicit Operation(int n) :
-        distance(n)
-    {}
-    OpType type() const override { return OpType::Forward; }
-    int distance;
-};
-template<>
-struct Operation<OpType::Backward> : public OperationBase {
-    explicit Operation(int n) :
-        distance(n)
-    {}
-    OpType type() const override { return OpType::Backward; }
-    int distance;
+struct Operation<OpType::Turn> : public OperationBase {
+    enum class Dir {
+        Left = -1,
+        Right = 1
+    };
+    Dir dir;
+    explicit Operation(Dir dir) : dir(dir) {}
+    OpType type() const override { return OpType::Turn; }
 };
 
-
+template<>
+struct Operation<OpType::Go> : public OperationBase {
+    enum class Dir {
+        Forward = 1,
+        Backward = -1
+    };
+    Dir dir;
+    int distance = 0;
+    explicit Operation(Dir dir, int d) : dir(dir), distance(d) {}
+    OpType type() const override { return OpType::Go; }
+};
 
 #endif

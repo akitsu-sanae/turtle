@@ -34,10 +34,8 @@ void Field::update() {
     case OpType::Quit:
         m_is_quit = true;
         break;
-    case OpType::Forward:
-    case OpType::Backward:
-    case OpType::TurnLeft:
-    case OpType::TurnRight:
+    case OpType::Go:
+    case OpType::Turn:
         m_turtle->update(op, m_tracks.back());
         break;
     case OpType::Load:

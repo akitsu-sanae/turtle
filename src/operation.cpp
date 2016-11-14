@@ -10,13 +10,13 @@ OperationBase::read(std::string const& command) {
     else if (args[0] == "sleep")
         return std::make_unique<Operation<OpType::Sleep> >(std::stoi(args[1]));
     else if (args[0] == "forward")
-        return std::make_unique<Operation<OpType::Forward> >(std::stoi(args[1]));
+        return std::make_unique<Operation<OpType::Go> >(Operation<OpType::Go>::Dir::Forward, std::stoi(args[1]));
     else if (args[0] == "backward")
-        return std::make_unique<Operation<OpType::Backward> >(std::stoi(args[1]));
+        return std::make_unique<Operation<OpType::Go> >(Operation<OpType::Go>::Dir::Backward, std::stoi(args[1]));
     else if (args[0] == "left")
-        return std::make_unique<Operation<OpType::TurnLeft> >();
+        return std::make_unique<Operation<OpType::Turn> >(Operation<OpType::Turn>::Dir::Left);
     else if (args[0] == "right")
-        return std::make_unique<Operation<OpType::TurnRight> >();
+        return std::make_unique<Operation<OpType::Turn> >(Operation<OpType::Turn>::Dir::Right);
     else
         return std::make_unique<Operation<OpType::Invalid> >();
 }
